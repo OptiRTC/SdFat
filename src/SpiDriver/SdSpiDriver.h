@@ -28,8 +28,23 @@
  */
 #ifndef SdSpiDriver_h
 #define SdSpiDriver_h
+#if defined(ARDUINO)
 #include <Arduino.h>
 #include "SPI.h"
+#endif // ARDUINO
+#if defined(PLATFORM_ID)
+#include "application.h"
+#warning Patching in SPISettings for firmware 0.5.3
+class SPISettings {
+public:
+  SPISettings() :_clock(1000000), _bitOrder(LSBFIRST), _dataMode(SPI_MODE0){}
+  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) :_clock(clock), _bitOrder(bitOrder), _dataMode(dataMode){}
+  uint32_t _clock;
+  uint8_t  _bitOrder;
+  uint8_t  _dataMode;
+};
+#endif // PLATFORM_ID
+
 #include "SdSpiBaseDriver.h"
 #include "SdFatConfig.h"
 //------------------------------------------------------------------------------
@@ -107,11 +122,39 @@ class SdSpiLibDriver {
 #else  // IMPLEMENT_SPI_PORT_SELECTION
   /** Activate SPI hardware. */
   void activate() {
+#if defined(PLATFORM_ID)
+#warning Patching in beginTransaction for firmware 0.5.3
+      int v;
+      const uint8_t divisor = 128;
+      SDCARD_SPI.setBitOrder(MSBFIRST);
+      SDCARD_SPI.setDataMode(SPI_MODE0);
+      if (divisor <= 2) {
+        v = SPI_CLOCK_DIV2;
+      } else  if (divisor <= 4) {
+        v = SPI_CLOCK_DIV4;
+      } else  if (divisor <= 8) {
+        v = SPI_CLOCK_DIV8;
+      } else  if (divisor <= 16) {
+        v = SPI_CLOCK_DIV16;
+      } else  if (divisor <= 32) {
+        v = SPI_CLOCK_DIV32;
+      } else  if (divisor <= 64) {
+        v = SPI_CLOCK_DIV64;
+      } else {
+        v = SPI_CLOCK_DIV128;
+      }
+      SDCARD_SPI.setClockDivider(v);
+#else
     SDCARD_SPI.beginTransaction(m_spiSettings);
+#endif // PLATFORM_ID
   }
   /** Deactivate SPI hardware. */
   void deactivate() {
+#ifndef PLATFORM_ID
     SDCARD_SPI.endTransaction();
+#else
+    #warning Stubbing out deactivate for firmware 0.5.3
+#endif // PLATFORM_ID
   }
   /** Initialize the SPI bus.
    *
@@ -267,10 +310,16 @@ class SdSpiAltDriver {
 };
 //------------------------------------------------------------------------------
 #if ENABLE_SOFTWARE_SPI_CLASS || defined(DOXYGEN)
+
 #ifdef ARDUINO
 #include "SoftSPI.h"
-#elif defined(PLATFORM_ID)  // Only defined if a Particle device
+#elif defined(PLATFORM_ID)
+#warning Using SoftSPI for firmware 0.5.3
+#if FIRMWARE_VERSION <= 000503
+#include "SoftSPI.h"
+#else
 #include "SoftSPIParticle.h"
+#endif // FIRMWARE_VERSION <= 0.5.3
 #endif  // ARDUINO
 /**
  * \class SdSpiSoftDriver
