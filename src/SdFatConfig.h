@@ -28,17 +28,29 @@
  */
 #ifndef SdFatConfig_h
 #define SdFatConfig_h
+#ifdef ARDUINO
 #include <Arduino.h>
+#endif // ARDUINO
+#include <stdint.h>
+#if defined(PLATFORM_ID)
+#define USE_PARTICLE_FEATURES 1
+#include <application.h>
+#define SDCARD_SPI SPI1
+using SPISettings = __SPISettings;
+#endif // PLATFORM_ID
 #include <stdint.h>
 #ifdef __AVR__
 #include <avr/io.h>
 #endif  // __AVR__
+#ifndef USE_PARTICLE_FEATURES
+#define USE_PARTICLE_FEATURES 0
+#endif
 //------------------------------------------------------------------------------
 /**
  * Set INCLUDE_SDIOS nonzero to include sdios.h in SdFat.h.
  * sdios.h provides C++ style IO Streams.
  */
-#define INCLUDE_SDIOS 1
+#define INCLUDE_SDIOS 0
 //------------------------------------------------------------------------------
 /**
  * Set USE_LONG_FILE_NAMES nonzero to use long file names (LFN).
@@ -68,7 +80,7 @@
  * These classes used extended multi-block SD I/O for better performance.
  * the SPI bus may not be shared with other devices in this mode.
  */
-#define ENABLE_EXTENDED_TRANSFER_CLASS 0
+#define ENABLE_EXTENDED_TRANSFER_CLASS 1
 //------------------------------------------------------------------------------
 /**
  * If the symbol USE_STANDARD_SPI_LIBRARY is zero, an optimized custom SPI
@@ -77,7 +89,7 @@
  * USE_STANDARD_SPI_LIBRARY is two, the SPI port can be selected with the
  * constructors SdFat(SPIClass* spiPort) and SdFatEX(SPIClass* spiPort).
  */
-#define USE_STANDARD_SPI_LIBRARY 0
+#define USE_STANDARD_SPI_LIBRARY 2
 //------------------------------------------------------------------------------
 /**
  * If the symbol ENABLE_SOFTWARE_SPI_CLASS is nonzero, the class SdFatSoftSpi
@@ -120,7 +132,7 @@
  * updated.  This will increase the speed of the freeClusterCount() call
  * after the first call.  Extra flash will be required.
  */
-#define MAINTAIN_FREE_CLUSTER_COUNT 0
+#define MAINTAIN_FREE_CLUSTER_COUNT 1
 //------------------------------------------------------------------------------
 /**
  * To enable SD card CRC checking set USE_SD_CRC nonzero.
@@ -131,7 +143,7 @@
  * Set USE_SD_CRC to 2 to used a larger table driven CRC-CCITT function.  This
  * function is faster for AVR but may be slower for ARM and other processors.
  */
-#define USE_SD_CRC 0
+#define USE_SD_CRC 1
 //------------------------------------------------------------------------------
 /**
  * Handle Watchdog Timer for WiFi modules.

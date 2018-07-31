@@ -134,7 +134,7 @@
 /**
  *  Enable Extra features for Arduino.
  */
-// #define ENABLE_ARDUINO_FEATURES 0  ////////////////////////FIX THIS /////////////////
+#define ENABLE_ARDUINO_FEATURES 0  ////////////////////////FIX THIS /////////////////
 #ifndef ENABLE_ARDUINO_FEATURES
 #include <Arduino.h>
 #if defined(ARDUINO) || defined(PLATFORM_ID) || defined(DOXYGEN)

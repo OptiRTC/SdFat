@@ -48,7 +48,7 @@
 #endif  // DEBUG_MODE
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 //------------------------------------------------------------------------------
-#if ENABLE_ARDUINO_FEATURES
+#if ENABLE_ARDUINO_FEATURES || USE_PARTICLE_FEATURES
 /** Use Print for Arduino */
 typedef Print print_t;
 #else  // ENABLE_ARDUINO_FEATURES
