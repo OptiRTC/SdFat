@@ -281,7 +281,12 @@ inline void fastDigitalToggle(uint8_t pin) {
 }
 //------------------------------------------------------------------------------
 inline void fastPinMode(uint8_t pin, uint8_t mode) {
+#if defined(PLATFORM_ID)
+  #warning Patching fastPinMode for firmware 0.5.3
+  pinMode(pin, (PinMode)mode);
+#else
   pinMode(pin, mode);
+#endif
 }
 #endif  // __AVR__
 //------------------------------------------------------------------------------

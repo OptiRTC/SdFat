@@ -28,11 +28,16 @@
  */
 #ifndef SdFatConfig_h
 #define SdFatConfig_h
+#ifdef ARDUINO
 #include <Arduino.h>
+#endif // ARDUINO
 #include <stdint.h>
 #ifdef __AVR__
 #include <avr/io.h>
 #endif  // __AVR__
+#ifdef PLATFORM_ID
+#include "application.h"
+#endif // PLATFORM_ID
 //------------------------------------------------------------------------------
 /**
  * Set USE_LONG_FILE_NAMES nonzero to use long file names (LFN).
@@ -76,7 +81,7 @@
  * will be defined. If ENABLE_EXTENDED_TRANSFER_CLASS is also nonzero,
  * the class SdFatSoftSpiEX will be defined.
  */
-#define ENABLE_SOFTWARE_SPI_CLASS 0
+#define ENABLE_SOFTWARE_SPI_CLASS 1
 //------------------------------------------------------------------------------
 /**
  * If CHECK_FLASH_PROGRAMMING is zero, overlap of single sector flash 
@@ -104,7 +109,7 @@
  * Set USE_SD_CRC to 2 to used a larger table driven CRC-CCITT function.  This
  * function is faster for AVR but may be slower for ARM and other processors.
  */
-#define USE_SD_CRC 0
+#define USE_SD_CRC 1
 //------------------------------------------------------------------------------
 /**
  * Handle Watchdog Timer for WiFi modules.
@@ -206,3 +211,23 @@
 #define IMPLEMENT_SPI_PORT_SELECTION 1
 #endif  // USE_STANDARD_SPI_LIBRARY
 #endif  // SdFatConfig_h
+//------------------------------------------------------------------------------
+/**
+ * Check if the build is a particle build
+ * we need to set some macros for legacy support if it is
+ */
+#if defined(PLATFORM_ID) // defined(PLATFORM_ID)
+#define PARTICLE_BUILD
+#if (PLATFORM_ID == 6)
+// Photon
+#define F_CPU 120000000
+#elif (PLATFORM_ID == 8)
+// P1
+#define F_CPU 120000000
+#elif (PLATFORM_ID == 10)
+// Electron
+#define F_CPU 120000000
+#else
+#error Building for unsupported particle platform
+#endif // PLATFORM_ID == 0
+#endif // defined(PLATFORM_ID)
