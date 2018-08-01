@@ -35,9 +35,21 @@
 #ifdef __AVR__
 #include <avr/io.h>
 #endif  // __AVR__
-#ifdef PLATFORM_ID
+#if defined(PLATFORM_ID)
+// Particle build, set missing info
 #include "application.h"
+#if PLATFORM_ID >= 6
+#if PLATFORM_ID <= 10
+// Photon or Electron
+#define F_CPU 120000000
+#define SDCARD_SPI SPI1
+#define FIRMWARE_VERSION 000503
+#else
+#error Building for unsupported particle platform
+#endif // PLATFORM_ID <= 10
+#endif // PLATFORM_ID >= 6
 #endif // PLATFORM_ID
+
 //------------------------------------------------------------------------------
 /**
  * Set USE_LONG_FILE_NAMES nonzero to use long file names (LFN).
@@ -57,7 +69,7 @@
  *  * (asterisk)
  *
  */
-#define USE_LONG_FILE_NAMES 1
+#define USE_LONG_FILE_NAMES 0
 //------------------------------------------------------------------------------
 /**
  * If the symbol ENABLE_EXTENDED_TRANSFER_CLASS is nonzero, the class SdFatEX
@@ -109,7 +121,7 @@
  * Set USE_SD_CRC to 2 to used a larger table driven CRC-CCITT function.  This
  * function is faster for AVR but may be slower for ARM and other processors.
  */
-#define USE_SD_CRC 1
+#define USE_SD_CRC 0
 //------------------------------------------------------------------------------
 /**
  * Handle Watchdog Timer for WiFi modules.
@@ -212,22 +224,3 @@
 #endif  // USE_STANDARD_SPI_LIBRARY
 #endif  // SdFatConfig_h
 //------------------------------------------------------------------------------
-/**
- * Check if the build is a particle build
- * we need to set some macros for legacy support if it is
- */
-#if defined(PLATFORM_ID) // defined(PLATFORM_ID)
-#define PARTICLE_BUILD
-#if (PLATFORM_ID == 6)
-// Photon
-#define F_CPU 120000000
-#elif (PLATFORM_ID == 8)
-// P1
-#define F_CPU 120000000
-#elif (PLATFORM_ID == 10)
-// Electron
-#define F_CPU 120000000
-#else
-#error Building for unsupported particle platform
-#endif // PLATFORM_ID == 0
-#endif // defined(PLATFORM_ID)

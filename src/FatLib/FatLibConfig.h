@@ -134,7 +134,7 @@
 /**
  *  Enable Extra features for Arduino.
  */
-//#define ENABLE_ARDUINO_FEATURES 0  ////////////////////////FIX THIS /////////////////
+#define ENABLE_ARDUINO_FEATURES 0  ////////////////////////FIX THIS /////////////////
 #ifndef ENABLE_ARDUINO_FEATURES
 #if defined(PLATFORM_ID)
 #warning Patched in for firmware 0.5.3

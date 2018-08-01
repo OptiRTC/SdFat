@@ -241,13 +241,16 @@ class SdSpiAltDriver {
 };
 //------------------------------------------------------------------------------
 #if ENABLE_SOFTWARE_SPI_CLASS || defined(DOXYGEN)
-// TODO: Particle firmware 
+
 #ifdef ARDUINO
 #include "SoftSPI.h"
-#elif defined(PLATFORM_ID)  // Only defined if a Particle device
+#elif defined(PLATFORM_ID)
 #warning Using SoftSPI for firmware 0.5.3
-//#include "SoftSPIParticle.h"
+#if FIRMWARE_VERSION <= 0.5.3
 #include "SoftSPI.h"
+#else
+#include "SoftSPIParticle.h"
+#endif // FIRMWARE_VERSION <= 0.5.3
 #endif  // ARDUINO
 /**
  * \class SdSpiSoftDriver
