@@ -93,7 +93,7 @@
  * will be defined. If ENABLE_EXTENDED_TRANSFER_CLASS is also nonzero,
  * the class SdFatSoftSpiEX will be defined.
  */
-#define ENABLE_SOFTWARE_SPI_CLASS 1
+#define ENABLE_SOFTWARE_SPI_CLASS 0
 //------------------------------------------------------------------------------
 /**
  * If CHECK_FLASH_PROGRAMMING is zero, overlap of single sector flash 

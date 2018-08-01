@@ -246,7 +246,7 @@ class SdSpiAltDriver {
 #include "SoftSPI.h"
 #elif defined(PLATFORM_ID)
 #warning Using SoftSPI for firmware 0.5.3
-#if FIRMWARE_VERSION <= 0.5.3
+#if FIRMWARE_VERSION <= 000503
 #include "SoftSPI.h"
 #else
 #include "SoftSPIParticle.h"
