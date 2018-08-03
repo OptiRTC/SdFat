@@ -69,7 +69,7 @@
  *  * (asterisk)
  *
  */
-#define USE_LONG_FILE_NAMES 0
+#define USE_LONG_FILE_NAMES 1
 //------------------------------------------------------------------------------
 /**
  * If the symbol ENABLE_EXTENDED_TRANSFER_CLASS is nonzero, the class SdFatEX
