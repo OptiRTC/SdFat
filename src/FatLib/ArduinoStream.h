@@ -24,13 +24,6 @@
  */
 #ifndef ArduinoStream_h
 #define ArduinoStream_h
-#if defined(PLATFORM_ID)
-  #include "application.h"
-  #warning Patched in yield for firmware 0.5.3
-  inline void yield() {
-    Particle.process();
-}
-#endif // PLATFORM_ID
 /**
  * \file
  * \brief ArduinoInStream and ArduinoOutStream classes
