@@ -37,13 +37,13 @@
 #endif  // __AVR__
 #if defined(PLATFORM_ID)
 // Particle build, set missing info
-#include "application.h"
+#include <application.h>
 #if PLATFORM_ID >= 6
 #if PLATFORM_ID <= 10
 // Photon or Electron
 #define F_CPU 120000000
 #define SDCARD_SPI SPI1
-#define FIRMWARE_VERSION 000503
+#define FIRMWARE_VERSION 000604
 #else
 #error Building for unsupported particle platform
 #endif // PLATFORM_ID <= 10
@@ -79,7 +79,7 @@
  * These classes used extended multi-block SD I/O for better performance.
  * the SPI bus may not be shared with other devices in this mode.
  */
-#define ENABLE_EXTENDED_TRANSFER_CLASS 0
+#define ENABLE_EXTENDED_TRANSFER_CLASS 1
 //-----------------------------------------------------------------------------
 /**
  * If the symbol USE_STANDARD_SPI_LIBRARY is nonzero, the classes SdFat and
@@ -96,21 +96,21 @@
 #define ENABLE_SOFTWARE_SPI_CLASS 0
 //------------------------------------------------------------------------------
 /**
- * If CHECK_FLASH_PROGRAMMING is zero, overlap of single sector flash 
+ * If CHECK_FLASH_PROGRAMMING is zero, overlap of single sector flash
  * programming and other operations will be allowed for faster write
  * performance.
  *
  * Some cards will not sleep in low power mode unless CHECK_FLASH_PROGRAMMING
  * is non-zero.
  */
-#define CHECK_FLASH_PROGRAMMING 1
+#define CHECK_FLASH_PROGRAMMING 0
 //------------------------------------------------------------------------------
 /**
  * Set MAINTAIN_FREE_CLUSTER_COUNT nonzero to keep the count of free clusters
  * updated.  This will increase the speed of the freeClusterCount() call
  * after the first call.  Extra flash will be required.
  */
-#define MAINTAIN_FREE_CLUSTER_COUNT 0
+#define MAINTAIN_FREE_CLUSTER_COUNT 1
 //------------------------------------------------------------------------------
 /**
  * To enable SD card CRC checking set USE_SD_CRC nonzero.
@@ -121,7 +121,7 @@
  * Set USE_SD_CRC to 2 to used a larger table driven CRC-CCITT function.  This
  * function is faster for AVR but may be slower for ARM and other processors.
  */
-#define USE_SD_CRC 0
+#define USE_SD_CRC 1
 //------------------------------------------------------------------------------
 /**
  * Handle Watchdog Timer for WiFi modules.

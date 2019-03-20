@@ -32,7 +32,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #elif defined(PLATFORM_ID)  // Only defined if a Particle device
-#include "application.h"
+#include <application.h>
 #else  // defined(ARDUINO)
 #error "Unknown system"
 #endif  // defined(ARDUINO)

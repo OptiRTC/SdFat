@@ -33,16 +33,9 @@
 #include "SPI.h"
 #endif // ARDUINO
 #if defined(PLATFORM_ID)
-#include "application.h"
+#include <application.h>
 #warning Patching in SPISettings for firmware 0.6.4
-class SPISettings {
-public:
-  SPISettings() :_clock(1000000), _bitOrder(LSBFIRST), _dataMode(SPI_MODE0){}
-  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) :_clock(clock), _bitOrder(bitOrder), _dataMode(dataMode){}
-  uint32_t _clock;
-  uint8_t  _bitOrder;
-  uint8_t  _dataMode;
-};
+typedef __SPISettings SPISettings;
 #endif // PLATFORM_ID
 
 #include "SdSpiBaseDriver.h"
@@ -65,10 +58,15 @@ class SdSpiLibDriver {
  public:
   /** Activate SPI hardware. */
   void activate() {
-    SDCARD_SPI.beginTransaction();
+    SDCARD_SPI.beginTransaction(m_spiSettings);
+    /*#warning Patching beginTransaction for firmware 0.6.4
+    SDCARD_SPI.setBitOrder(MSBFIRST);
+    SDCARD_SPI.setDataMode(SPI_MODE0);
+    SDCARD_SPI.setClockDivider(SPI_CLOCK_DIV2);*/
   }
   /** Deactivate SPI hardware. */
   void deactivate() {
+    //#warning Patching endTransaction for firmware 0.6.4
     SDCARD_SPI.endTransaction();
   }
   /** Initialize the SPI bus.
@@ -79,7 +77,7 @@ class SdSpiLibDriver {
     m_csPin = csPin;
     digitalWrite(csPin, HIGH);
     pinMode(csPin, OUTPUT);
-    SDCARD_SPI.begin();
+    SDCARD_SPI.begin(csPin);
   }
   /** Receive a byte.
    *
@@ -216,13 +214,6 @@ class SdSpiAltDriver {
 
 #ifdef ARDUINO
 #include "SoftSPI.h"
-#elif defined(PLATFORM_ID)
-#warning Using SoftSPI for firmware 0.5.3
-#if FIRMWARE_VERSION <= 000503
-#include "SoftSPI.h"
-#else
-#include "SoftSPIParticle.h"
-#endif // FIRMWARE_VERSION <= 0.5.3
 #endif  // ARDUINO
 /**
  * \class SdSpiSoftDriver

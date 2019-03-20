@@ -138,7 +138,7 @@
 #ifndef ENABLE_ARDUINO_FEATURES
 #if defined(PLATFORM_ID)
 #warning Patched in for firmware 0.5.3
-#include "application.h"
+#include <application.h>
 #else
 #include <Arduino.h>
 #endif // PLATFORM_ID

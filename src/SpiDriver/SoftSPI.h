@@ -23,7 +23,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 /**
- * @file 
+ * @file
  * @brief  Software SPI.
  *
  * @defgroup softSPI Software SPI
