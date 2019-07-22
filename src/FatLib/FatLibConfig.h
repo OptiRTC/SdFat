@@ -136,12 +136,7 @@
  */
 #define ENABLE_ARDUINO_FEATURES 0  ////////////////////////FIX THIS /////////////////
 #ifndef ENABLE_ARDUINO_FEATURES
-#if defined(PLATFORM_ID)
-#warning Patched in for firmware 0.5.3
-#include "application.h"
-#else
 #include <Arduino.h>
-#endif // PLATFORM_ID
 #if defined(ARDUINO) || defined(PLATFORM_ID) || defined(DOXYGEN)
 #define ENABLE_ARDUINO_FEATURES 1
 #else  //  #if defined(ARDUINO) || defined(DOXYGEN)

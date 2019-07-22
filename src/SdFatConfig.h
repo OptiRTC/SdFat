@@ -32,30 +32,22 @@
 #include <Arduino.h>
 #endif // ARDUINO
 #include <stdint.h>
+#if defined(PLATFORM_ID)
+#include <application.h>
+#warning Using SPI1 as SDCARD_SPI
+#define SDCARD_SPI SPI1
+using SPISettings = __SPISettings;
+#endif // PLATFORM_ID
+#include <stdint.h>
 #ifdef __AVR__
 #include <avr/io.h>
 #endif  // __AVR__
-#if defined(PLATFORM_ID)
-// Particle build, set missing info
-#include "application.h"
-#if PLATFORM_ID >= 6
-#if PLATFORM_ID <= 10
-// Photon or Electron
-#define F_CPU 120000000
-#define SDCARD_SPI SPI1
-#define FIRMWARE_VERSION 000503
-#else
-#error Building for unsupported particle platform
-#endif // PLATFORM_ID <= 10
-#endif // PLATFORM_ID >= 6
-#endif // PLATFORM_ID
-
 //------------------------------------------------------------------------------
 /**
  * Set INCLUDE_SDIOS nonzero to include sdios.h in SdFat.h.
  * sdios.h provides C++ style IO Streams.
  */
-#define INCLUDE_SDIOS 1
+#define INCLUDE_SDIOS 0
 //------------------------------------------------------------------------------
 /**
  * Set USE_LONG_FILE_NAMES nonzero to use long file names (LFN).
@@ -94,7 +86,7 @@
  * USE_STANDARD_SPI_LIBRARY is two, the SPI port can be selected with the
  * constructors SdFat(SPIClass* spiPort) and SdFatEX(SPIClass* spiPort).
  */
-#define USE_STANDARD_SPI_LIBRARY 0
+#define USE_STANDARD_SPI_LIBRARY 2
 //------------------------------------------------------------------------------
 /**
  * If the symbol ENABLE_SOFTWARE_SPI_CLASS is nonzero, the class SdFatSoftSpi
@@ -146,7 +138,7 @@
  * Set USE_SD_CRC to 2 to used a larger table driven CRC-CCITT function.  This
  * function is faster for AVR but may be slower for ARM and other processors.
  */
-#define USE_SD_CRC 1
+#define USE_SD_CRC 0
 //------------------------------------------------------------------------------
 /**
  * Handle Watchdog Timer for WiFi modules.
@@ -248,4 +240,3 @@
 #define IMPLEMENT_SPI_PORT_SELECTION 0
 #endif  // IMPLEMENT_SPI_PORT_SELECTION
 #endif  // SdFatConfig_h
-//------------------------------------------------------------------------------
