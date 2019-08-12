@@ -35,7 +35,27 @@ static void SD_SPI_DMA_TransferComplete_Callback(void) {
  * \param[in] divisor SCK clock divider relative to the APB1 or APB2 clock.
  */
 void SdSpiAltDriver::activate() {
-  m_spi->beginTransaction(m_spiSettings);
+  int v;
+    const uint8_t divisor = 128;
+    m_spi->setBitOrder(MSBFIRST);
+    m_spi->setDataMode(SPI_MODE0);
+    if (divisor <= 2) {
+      v = SPI_CLOCK_DIV2;
+    } else  if (divisor <= 4) {
+      v = SPI_CLOCK_DIV4;
+    } else  if (divisor <= 8) {
+      v = SPI_CLOCK_DIV8;
+    } else  if (divisor <= 16) {
+      v = SPI_CLOCK_DIV16;
+    } else  if (divisor <= 32) {
+      v = SPI_CLOCK_DIV32;
+    } else  if (divisor <= 64) {
+      v = SPI_CLOCK_DIV64;
+    } else {
+      v = SPI_CLOCK_DIV128;
+    }
+    m_spi->setClockDivider(v);
+  //m_spi->beginTransaction(m_spiSettings);
 }
 //------------------------------------------------------------------------------
 /** Initialize the SPI bus.
@@ -53,7 +73,7 @@ void SdSpiAltDriver::begin(uint8_t csPin) {
  * End SPI transaction.
  */
 void SdSpiAltDriver::deactivate() {
-  m_spi->endTransaction();
+  //m_spi->endTransaction();
 }
 //------------------------------------------------------------------------------
 /** Receive a byte.

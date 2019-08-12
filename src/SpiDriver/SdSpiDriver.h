@@ -54,11 +54,39 @@ class SdSpiLibDriver {
 #if IMPLEMENT_SPI_PORT_SELECTION
   /** Activate SPI hardware. */
   void activate() {
+#if defined(PLATFORM_ID)
+#warning Patching in beginTransaction for firmware 0.5.3
+      int v;
+      const uint8_t divisor = 128;
+      SDCARD_SPI.setBitOrder(MSBFIRST);
+      SDCARD_SPI.setDataMode(SPI_MODE0);
+      if (divisor <= 2) {
+        v = SPI_CLOCK_DIV2;
+      } else  if (divisor <= 4) {
+        v = SPI_CLOCK_DIV4;
+      } else  if (divisor <= 8) {
+        v = SPI_CLOCK_DIV8;
+      } else  if (divisor <= 16) {
+        v = SPI_CLOCK_DIV16;
+      } else  if (divisor <= 32) {
+        v = SPI_CLOCK_DIV32;
+      } else  if (divisor <= 64) {
+        v = SPI_CLOCK_DIV64;
+      } else {
+        v = SPI_CLOCK_DIV128;
+      }
+      SDCARD_SPI.setClockDivider(v);
+#else
     m_spi->beginTransaction(m_spiSettings);
+#endif // PLATFORM_ID
   }
   /** Deactivate SPI hardware. */
   void deactivate() {
+#ifndef PLATFORM_ID
     m_spi->endTransaction();
+#else
+    #warning Stubbing out deactivate for firmware 0.5.3
+#endif // PLATFORM_ID
   }
   /** Initialize the SPI bus.
    *

@@ -36,7 +36,15 @@
 #include <application.h>
 #warning Using SPI1 as SDCARD_SPI
 #define SDCARD_SPI SPI1
-using SPISettings = __SPISettings;
+#warning Patching in SPISettings for firmware 0.5.3
+class SPISettings {
+public:
+  SPISettings() :_clock(1000000), _bitOrder(LSBFIRST), _dataMode(SPI_MODE0){}
+  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) :_clock(clock), _bitOrder(bitOrder), _dataMode(dataMode){}
+  uint32_t _clock;
+  uint8_t  _bitOrder;
+  uint8_t  _dataMode;
+};
 #endif // PLATFORM_ID
 #include <stdint.h>
 #ifdef __AVR__
