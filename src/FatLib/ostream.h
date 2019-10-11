@@ -178,7 +178,7 @@ class ostream : public virtual ios {
    * \return the stream
    */
   ostream& operator<< (const void* arg) {
-    putNum(reinterpret_cast<uint32_t>(arg));
+    putNum(reinterpret_cast<unsigned int>(arg));
     return *this;
   }
 #if (defined(ARDUINO) && ENABLE_ARDUINO_FEATURES) || defined(DOXYGEN)
