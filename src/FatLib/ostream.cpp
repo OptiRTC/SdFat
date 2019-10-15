@@ -141,10 +141,15 @@ void ostream::putNum(int32_t n) {
   if (neg) {
     n = -n;
   }
-  putNum(n, neg);
+  putNum(static_cast<size_t>(n), neg);
 }
 //------------------------------------------------------------------------------
-void ostream::putNum(uint32_t n, bool neg) {
+void ostream::putNum(uint32_t n, bool neg)
+{
+  putNum(static_cast<size_t>(n), neg);
+}
+
+void ostream::putNum(size_t n, bool neg) {
   char buf[13];
   char* end = buf + sizeof(buf) - 1;
   char* num;

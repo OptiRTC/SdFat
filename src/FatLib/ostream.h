@@ -138,7 +138,7 @@ class ostream : public virtual ios {
    * \return the stream
    */
   ostream &operator<< (unsigned short arg) {  // NOLINT
-    putNum((uint32_t)arg);
+    putNum((size_t)arg);
     return *this;
   }
   /** Output signed int
@@ -154,7 +154,7 @@ class ostream : public virtual ios {
    * \return the stream
    */
   ostream &operator<< (unsigned int arg) {
-    putNum((uint32_t)arg);
+    putNum((size_t)arg);
     return *this;
   }
   /** Output signed long
@@ -170,7 +170,7 @@ class ostream : public virtual ios {
    * \return the stream
    */
   ostream &operator<< (unsigned long arg) {  // NOLINT
-    putNum((uint32_t)arg);
+    putNum(static_cast<size_t>(arg));
     return *this;
   }
   /** Output pointer
@@ -178,7 +178,7 @@ class ostream : public virtual ios {
    * \return the stream
    */
   ostream& operator<< (const void* arg) {
-    putNum(reinterpret_cast<unsigned int>(arg));
+    putNum(reinterpret_cast<size_t>(arg));
     return *this;
   }
 #if (defined(ARDUINO) && ENABLE_ARDUINO_FEATURES) || defined(DOXYGEN)
@@ -270,6 +270,7 @@ class ostream : public virtual ios {
   void putDouble(double n);
   void putNum(uint32_t n, bool neg = false);
   void putNum(int32_t n);
+  void putNum(size_t n, bool neg = false);
   void putPgm(const char* str);
   void putStr(const char* str);
 };
